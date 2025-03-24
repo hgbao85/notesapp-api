@@ -37,6 +37,7 @@ async function createPaymentLink({ amount, description, buyerName, buyerEmail, b
         cancelUrl,
         // expiredAt: Math.floor(Date.now() / 1000) + 3600, // Thời gian hết hạn sau 1 giờ
     };
+    console.log("Request body:", body);
     const signature = calculateChecksum(body, CHECKSUM_KEY);
     console.log("Signature:", signature);
     const headers = {

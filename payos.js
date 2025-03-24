@@ -1,4 +1,3 @@
-// payos.js
 const crypto = require("crypto");
 const axios = require("axios");
 
@@ -7,12 +6,12 @@ const API_KEY = process.env.PAYOS_API_KEY;
 const CHECKSUM_KEY = process.env.PAYOS_CHECKSUM_KEY;
 
 function generateOrderCode() {
-    return Math.floor(100000 + Math.random() * 900000); // random 6 số
+    return Math.floor(100000 + Math.random() * 900000);
 }
 
 function calculateChecksum(data, key) {
     const keysForSignature = ["amount", "cancelUrl", "description", "orderCode", "returnUrl"];
-    const sortedKeys = keysForSignature.sort(); // Alphabet sort
+    const sortedKeys = keysForSignature.sort();
     const rawData = sortedKeys.map(k => `${k}=${data[k]}`).join("&");
     return crypto.createHmac("sha256", key).update(rawData).digest("hex");
 }
@@ -32,7 +31,6 @@ async function createPaymentLink({ amount, description, buyerName, buyerEmail, b
         items,
         returnUrl,
         cancelUrl,
-        // expiredAt: Math.floor(Date.now() / 1000) + 3600, // Thời gian hết hạn sau 1 giờ
     };
     console.log("Request body:", body);
     const signature = calculateChecksum(body, CHECKSUM_KEY);

@@ -12,21 +12,23 @@ app.use(cors());
 app.use(bodyParser.json());
 
 app.post("/create-payment", async (req, res) => {
-    const { amount, description } = req.body;
+    const { amount, description, buyerName, buyerEmail, buyerPhone, buyerAddress, items, cancelUrl, returnUrl } = req.body;
 
     if (!amount) {
         return res.status(400).json({ error: "Amount is required" });
     }
 
     try {
-        const returnUrl = "https://payment-apipayos.onrender.com/payment-success";
-        const cancelUrl = "https://payment-apipayos.onrender.com/payment-cancel";
-
         const result = await createPaymentLink({
             amount,
             description: description || "Thanh toán đơn hàng",
-            returnUrl,
+            buyerName,
+            buyerEmail,
+            buyerPhone,
+            buyerAddress,
+            items,
             cancelUrl,
+            returnUrl,
         });
 
         res.json(result);

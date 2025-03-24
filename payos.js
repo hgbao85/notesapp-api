@@ -21,13 +21,18 @@ function calculateChecksum(data, key) {
     return crypto.createHmac("sha256", key).update(jsonString).digest("hex");
 }
 
-async function createPaymentLink({ amount, description, returnUrl, cancelUrl }) {
+async function createPaymentLink({ amount, description, buyerName, buyerEmail, buyerPhone, buyerAddress, items, returnUrl, cancelUrl }) {
     const orderCode = generateOrderCode();
 
     const body = {
         orderCode,
         amount,
         description,
+        buyerName,
+        buyerEmail,
+        buyerPhone,
+        buyerAddress,
+        items,
         returnUrl,
         cancelUrl,
     };
@@ -45,11 +50,7 @@ async function createPaymentLink({ amount, description, returnUrl, cancelUrl }) 
         { ...body, checksum },
         { headers }
     );
-    const checkoutUrl = response.data?.checkoutUrl;
-    return {
-        checkoutUrl,
-        orderCode,
-    };
+    return response.data;
 }
 
 module.exports = {

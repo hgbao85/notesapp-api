@@ -11,15 +11,12 @@ function generateOrderCode() {
 }
 
 function calculateChecksum(data, key) {
-    const sortedKeys = Object.keys(data).sort();
-    const sortedData = {};
-    sortedKeys.forEach((k) => {
-        sortedData[k] = data[k];
-    });
-
-    const jsonString = JSON.stringify(sortedData);
-    return crypto.createHmac("sha256", key).update(jsonString).digest("hex");
+    const keysForSignature = ["amount", "cancelUrl", "description", "orderCode", "returnUrl"];
+    const sortedKeys = keysForSignature.sort(); // Alphabet sort
+    const rawData = sortedKeys.map(k => `${k}=${data[k]}`).join("&");
+    return crypto.createHmac("sha256", key).update(rawData).digest("hex");
 }
+
 
 async function createPaymentLink({ amount, description, buyerName, buyerEmail, buyerPhone, buyerAddress, items, returnUrl, cancelUrl }) {
     const orderCode = generateOrderCode();

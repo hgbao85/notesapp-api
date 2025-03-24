@@ -19,8 +19,8 @@ app.post("/create-payment", async (req, res) => {
     }
 
     try {
-        const returnUrl = "https://localhost:3000/payment-success";
-        const cancelUrl = "https://localhost:3000/payment-cancel";
+        const returnUrl = "https://payment-apipayos.onrender.com/payment-success";
+        const cancelUrl = "https://payment-apipayos.onrender.com/payment-cancel";
 
         const result = await createPaymentLink({
             amount,

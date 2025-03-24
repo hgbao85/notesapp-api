@@ -45,7 +45,7 @@ async function createPaymentLink({ amount, description, returnUrl, cancelUrl }) 
         { ...body, checksum },
         { headers }
     );
-    const checkoutUrl = response.data?.data?.checkoutUrl;
+    const checkoutUrl = response.data?.checkoutUrl;
     return {
         checkoutUrl,
         orderCode,

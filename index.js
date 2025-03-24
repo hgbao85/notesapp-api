@@ -11,7 +11,7 @@ const PORT = process.env.PORT || 3000;
 app.use(cors());
 app.use(bodyParser.json());
 
-app.post("/create-payment", async (req, res) => {
+app.post("/api/create-payment", async (req, res) => {
     const { amount, description, buyerName, buyerEmail, buyerPhone, buyerAddress, items, cancelUrl, returnUrl } = req.body;
 
     if (!amount) {

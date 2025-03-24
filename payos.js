@@ -35,6 +35,7 @@ async function createPaymentLink({ amount, description, buyerName, buyerEmail, b
         items,
         returnUrl,
         cancelUrl,
+        expiredAt: Math.floor(Date.now() / 1000) + 3600, // Thời gian hết hạn sau 1 giờ
     };
 
     const checksum = calculateChecksum(body, CHECKSUM_KEY);
@@ -45,12 +46,17 @@ async function createPaymentLink({ amount, description, buyerName, buyerEmail, b
         "Content-Type": "application/json",
     };
 
-    const response = await axios.post(
-        "https://api-merchant.payos.vn/v2/payment-requests",
-        { ...body, checksum },
-        { headers }
-    );
-    return response.data;
+    try {
+        const response = await axios.post(
+            "https://api-merchant.payos.vn/v2/payment-requests",
+            { ...body, checksum },
+            { headers }
+        );
+        return response.data;
+    } catch (err) {
+        console.error(err.response?.data || err.message);
+        throw err;
+    }
 }
 
 module.exports = {

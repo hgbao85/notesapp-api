@@ -23,7 +23,7 @@ function calculateChecksum(data, key) {
 
 async function createPaymentLink({ amount, description, buyerName, buyerEmail, buyerPhone, buyerAddress, items, returnUrl, cancelUrl }) {
     const orderCode = generateOrderCode();
-
+    const signature = calculateChecksum(body, CHECKSUM_KEY);
     const body = {
         orderCode,
         amount,
@@ -37,8 +37,6 @@ async function createPaymentLink({ amount, description, buyerName, buyerEmail, b
         cancelUrl,
         expiredAt: Math.floor(Date.now() / 1000) + 3600, // Thời gian hết hạn sau 1 giờ
     };
-
-    const signature = calculateChecksum(body, CHECKSUM_KEY);
 
     const headers = {
         "x-client-id": CLIENT_ID,

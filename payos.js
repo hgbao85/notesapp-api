@@ -41,7 +41,7 @@ async function createPaymentLink({ amount, description, returnUrl, cancelUrl }) 
     };
 
     const response = await axios.post(
-        "https://api.payos.vn/v2/payment-requests",
+        "https://api-merchant.payos.vn/v2/payment-requests",
         { ...body, checksum },
         { headers }
     );

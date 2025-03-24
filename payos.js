@@ -38,7 +38,7 @@ async function createPaymentLink({ amount, description, buyerName, buyerEmail, b
         expiredAt: Math.floor(Date.now() / 1000) + 3600, // Thời gian hết hạn sau 1 giờ
     };
 
-    const checksum = calculateChecksum(body, CHECKSUM_KEY);
+    const signature = calculateChecksum(body, CHECKSUM_KEY);
 
     const headers = {
         "x-client-id": CLIENT_ID,
@@ -49,7 +49,7 @@ async function createPaymentLink({ amount, description, buyerName, buyerEmail, b
     try {
         const response = await axios.post(
             "https://api-merchant.payos.vn/v2/payment-requests",
-            { ...body, checksum },
+            { ...body, signature },
             { headers }
         );
         return response.data;
